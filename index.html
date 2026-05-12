@@ -9,12 +9,12 @@
             --gold: #d4af37; 
             --dark-purple: #1a0f1f; 
             --white: #ffffff; 
-            --card-bg: rgba(255, 255, 255, 0.05); 
+            --card-bg: rgba(255, 255, 255, 0.07); 
             --modal-bg: #120a14; 
         }
         
         body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; 
             background-color: var(--dark-purple); 
             color: var(--white); 
             margin: 0; 
@@ -26,14 +26,14 @@
 
         header { 
             text-align: center; 
-            padding: 40px 20px; 
+            padding: 50px 20px; 
             width: 100%; 
-            border-bottom: 1px solid var(--gold); 
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3); 
         }
 
-        h1 { color: var(--gold); letter-spacing: 5px; text-transform: uppercase; margin: 0 0 20px 0; }
+        h1 { color: var(--gold); letter-spacing: 7px; text-transform: uppercase; margin: 0 0 25px 0; font-size: 2.5em; }
 
-        nav { display: flex; gap: 30px; justify-content: center; }
+        nav { display: flex; gap: 40px; justify-content: center; }
         nav a { 
             color: var(--white); 
             text-decoration: none; 
@@ -42,131 +42,142 @@
             letter-spacing: 2px; 
             cursor: pointer; 
             transition: 0.3s; 
-            padding-bottom: 5px; 
+            padding-bottom: 8px;
+            opacity: 0.8;
         }
-        nav a:hover, nav a.active { color: var(--gold); border-bottom: 2px solid var(--gold); }
+        nav a:hover, nav a.active { color: var(--gold); border-bottom: 2px solid var(--gold); opacity: 1; }
 
         .container { width: 90%; max-width: 1200px; padding: 40px 0; display: none; }
         .active-section { display: block; }
 
         .product-grid { 
             display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
-            gap: 30px; 
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+            gap: 35px; 
         }
 
         .product-card { 
             background: var(--card-bg); 
-            border: 1px solid rgba(212, 175, 55, 0.3); 
+            border: 1px solid rgba(212, 175, 55, 0.2); 
             border-radius: 15px; 
             padding: 20px; 
             text-align: center; 
-            transition: 0.4s; 
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
         }
         .product-card:hover { 
             border-color: var(--gold); 
-            transform: translateY(-5px); 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5); 
+            transform: translateY(-8px); 
+            box-shadow: 0 15px 30px rgba(0,0,0,0.6); 
         }
 
         .product-card img { 
             width: 100%; 
-            height: 250px; 
+            height: 280px; 
             object-fit: cover; 
-            border-radius: 10px; 
+            border-radius: 12px; 
             cursor: pointer; 
-            margin-bottom: 15px; 
+            margin-bottom: 20px; 
         }
 
-        .product-card h3 { color: var(--gold); margin: 10px 0; font-size: 1.2em; }
-        .product-card .price { font-size: 1.1em; font-weight: bold; margin-bottom: 10px; }
-        .product-card .short-desc { font-size: 0.9em; color: #aaa; margin-bottom: 15px; height: 40px; overflow: hidden; }
+        .product-card h3 { color: var(--gold); margin: 10px 0; font-size: 1.4em; }
+        .product-card .price { font-size: 1.2em; font-weight: bold; margin-bottom: 15px; color: var(--white); }
+        
+        /* აღწერის სტილი ბარათზე */
+        .product-card .description-text { 
+            font-size: 0.95em; 
+            color: #ccc; 
+            margin-bottom: 20px; 
+            line-height: 1.5;
+            min-height: 3em;
+        }
 
-        /* Modal Styles */
         .modal { 
             display: none; 
             position: fixed; 
-            z-index: 2000; 
+            z-index: 3000; 
             left: 0; top: 0; 
             width: 100%; height: 100%; 
-            background-color: rgba(0,0,0,0.9); 
+            background-color: rgba(0,0,0,0.95); 
             justify-content: center; 
             align-items: center; 
+            backdrop-filter: blur(5px);
         }
         .modal-content { 
             background: var(--modal-bg); 
             display: flex; 
-            max-width: 900px; 
+            max-width: 1000px; 
             width: 95%; 
-            max-height: 90vh; 
+            max-height: 85vh; 
             border: 1px solid var(--gold); 
-            border-radius: 15px; 
+            border-radius: 20px; 
             overflow: hidden; 
             position: relative; 
+            box-shadow: 0 0 50px rgba(212, 175, 55, 0.1);
         }
-        .modal-image-side { flex: 1; background: #000; display: flex; align-items: center; justify-content: center; }
+        .modal-image-side { flex: 1.2; background: #000; display: flex; align-items: center; justify-content: center; }
         .modal-image-side img { width: 100%; height: 100%; object-fit: contain; }
-        .modal-info-side { flex: 1; padding: 40px; overflow-y: auto; }
+        .modal-info-side { flex: 1; padding: 45px; overflow-y: auto; display: flex; flex-direction: column; }
 
         .btn { 
             width: 100%; 
             background: var(--gold); 
             color: #000; 
-            padding: 15px; 
+            padding: 16px; 
             border: none; 
-            border-radius: 8px; 
+            border-radius: 10px; 
             font-weight: bold; 
             cursor: pointer; 
             text-transform: uppercase; 
             transition: 0.3s; 
+            font-size: 1em;
+            letter-spacing: 1px;
         }
-        .btn:hover { background: #b8962d; transform: scale(1.02); }
+        .btn:hover { background: #f1c40f; transform: scale(1.02); box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3); }
 
-        @media (max-width: 768px) {
-            .modal-content { flex-direction: column; }
-            .modal-image-side { height: 300px; }
+        @media (max-width: 850px) {
+            .modal-content { flex-direction: column; max-height: 95vh; }
+            .modal-image-side { height: 350px; }
+            .modal-info-side { padding: 30px; }
         }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>YGGDRASIL</h1>
+    <h1>იგდრასილი</h1>
     <nav>
-        <a onclick="showSection('products')" id="nav-products" class="active">კოლექცია</a>
+        <a onclick="showSection('products')" id="nav-products" class="active">პროდუქტები</a>
         <a onclick="showSection('booking')" id="nav-booking">დაჯავშნა</a>
     </nav>
 </header>
 
 <div id="products" class="container active-section">
     <div class="product-grid" id="productContainer">
-        <p style="text-align: center; width: 100%;">სამყარო იტვირთება...</p>
+        <p style="text-align: center; width: 100%; font-style: italic; color: var(--gold);">იტვირთება კოლექცია...</p>
     </div>
 </div>
 
 <div id="booking" class="container">
-    <div style="max-width: 600px; margin: auto; background: var(--card-bg); padding: 30px; border-radius: 15px; border: 1px solid var(--gold);">
-        <h2 style="text-align: center; color: var(--gold);">ჩაეწერე კონსულტაციაზე</h2>
+    <div style="max-width: 500px; margin: auto; background: var(--card-bg); padding: 40px; border-radius: 20px; border: 1px solid rgba(212, 175, 55, 0.3);">
+        <h2 style="text-align: center; color: var(--gold); margin-bottom: 30px;">დაჯავშნა / შეკვეთა</h2>
         <form action="https://formspree.io/f/xdablekz" method="POST">
-            <label>სახელი</label>
-            <input type="text" name="name" style="width:100%; padding:10px; margin:10px 0; background:#2a1a2e; border:1px solid var(--gold); color:white;" required>
-            <label>ტელეფონი</label>
-            <input type="tel" name="phone" style="width:100%; padding:10px; margin:10px 0; background:#2a1a2e; border:1px solid var(--gold); color:white;" required>
-            <button type="submit" class="btn" style="margin-top:20px;">გაგზავნა</button>
+            <input type="text" name="name" placeholder="თქვენი სახელი" style="width:100%; padding:15px; margin-bottom:15px; background:rgba(0,0,0,0.3); border:1px solid var(--gold); color:white; border-radius:8px;" required>
+            <input type="tel" name="phone" placeholder="ტელეფონის ნომერი" style="width:100%; padding:15px; margin-bottom:20px; background:rgba(0,0,0,0.3); border:1px solid var(--gold); color:white; border-radius:8px;" required>
+            <button type="submit" class="btn">გაგზავნა</button>
         </form>
     </div>
 </div>
 
 <div id="productModal" class="modal">
     <div class="modal-content">
-        <span style="position:absolute; right:20px; top:15px; font-size:35px; color:var(--gold); cursor:pointer; z-index:10;" onclick="closeModal()">&times;</span>
+        <span style="position:absolute; right:25px; top:15px; font-size:40px; color:var(--gold); cursor:pointer; z-index:100;" onclick="closeModal()">&times;</span>
         <div class="modal-image-side"><img id="modalImg" src=""></div>
         <div class="modal-info-side">
-            <h2 id="modalTitle" style="color:var(--gold); margin-top:0;"></h2>
-            <p id="modalPrice" style="font-size:1.4em; font-weight:bold; color:var(--white);"></p>
-            <hr style="border: 0; border-top: 1px solid rgba(212, 175, 55, 0.2); margin: 20px 0;">
-            <div id="modalDesc" style="line-height: 1.6; color: #ddd; margin-bottom: 30px;"></div>
-            <button class="btn" onclick="showSection('booking')">შეკვეთა / დაჯავშნა</button>
+            <h2 id="modalTitle" style="color:var(--gold); margin: 0 0 15px 0; font-size: 2em;"></h2>
+            <p id="modalPrice" style="font-size:1.5em; font-weight:bold; color:var(--white); margin-bottom: 20px;"></p>
+            <div style="height: 2px; background: linear-gradient(90deg, var(--gold), transparent); margin-bottom: 25px;"></div>
+            <div id="modalDesc" style="line-height: 1.7; color: #eee; margin-bottom: auto; font-size: 1.05em; padding-bottom: 30px;"></div>
+            <button class="btn" onclick="showSection('booking')">ამ ნივთის შეკვეთა</button>
         </div>
     </div>
 </div>
@@ -177,8 +188,8 @@
         document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
         document.getElementById(id).classList.add('active-section');
         document.getElementById('nav-' + id).classList.add('active');
-        if(id !== 'productModal') window.scrollTo(0,0);
-        if(document.getElementById('productModal').style.display === 'flex') closeModal();
+        if(id !== 'productModal') window.scrollTo({top: 0, behavior: 'smooth'});
+        closeModal();
     }
 
     async function fetchProducts() {
@@ -198,25 +209,24 @@
                     const card = document.createElement('div');
                     card.className = 'product-card';
                     
-                    // ვამუშავებთ აღწერას, რომ Enter-ები <br>-ებად იქცეს
-                    const cleanDesc = (p.description || "აღწერა არ არის").replace(/\n/g, '<br>');
-                    const cleanModalInfo = (p.modal_info || "").replace(/\n/g, '<br>');
-                    const displayDesc = cleanModalInfo || cleanDesc;
+                    // ტექსტების მომზადება
+                    const desc = p.description || "";
+                    const mInfo = p.modal_info || "";
+                    const displayDesc = (mInfo || desc).replace(/\n/g, '<br>');
 
                     card.innerHTML = `
                         <img src="${p.image}" alt="${p.title}" loading="lazy" 
                              onclick="openModal(\`${p.image}\`, \`${p.title}\`, \`${p.price}\`, \`${displayDesc}\`)">
                         <h3>${p.title}</h3>
                         <div class="price">${p.price} ₾</div>
-                        <div class="short-desc">${p.description ? p.description.substring(0, 60) + '...' : ''}</div>
-                        <button class="btn" style="padding: 8px;" onclick="openModal(\`${p.image}\`, \`${p.title}\`, \`${p.price}\`, \`${displayDesc}\`)">ნახვა</button>
+                        <div class="description-text">${desc.substring(0, 80)}${desc.length > 80 ? '...' : ''}</div>
+                        <button class="btn" style="padding: 10px; font-size: 0.9em;" onclick="openModal(\`${p.image}\`, \`${p.title}\`, \`${p.price}\`, \`${displayDesc}\`)">დეტალები</button>
                     `;
                     container.appendChild(card);
                 }
             }
         } catch (e) { 
-            console.error(e);
-            container.innerHTML = "<p style='grid-column: 1/-1;'>შეცდომა პროდუქტების ჩატვირთვისას. სცადეთ მოგვიანებით.</p>"; 
+            container.innerHTML = "<p style='grid-column: 1/-1; text-align: center;'>ჩატვირთვა ვერ მოხერხდა. შეამოწმეთ ინტერნეტი.</p>"; 
         }
     }
 
@@ -226,18 +236,16 @@
         document.getElementById('modalPrice').innerText = price + ' ₾';
         document.getElementById('modalDesc').innerHTML = desc;
         document.getElementById('productModal').style.display = 'flex';
-        document.body.style.overflow = 'hidden'; // გათიშავს სკროლს ქვეშ
+        document.body.style.overflow = 'hidden';
     }
 
     function closeModal() { 
         document.getElementById('productModal').style.display = 'none'; 
-        document.body.style.overflow = 'auto'; // აღადგენს სკროლს
+        document.body.style.overflow = 'auto';
     }
 
-    // დახურვა გარეთ დაჭერისას
     window.onclick = function(event) {
-        const modal = document.getElementById('productModal');
-        if (event.target == modal) closeModal();
+        if (event.target == document.getElementById('productModal')) closeModal();
     }
 
     window.onload = fetchProducts;
