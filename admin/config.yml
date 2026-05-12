@@ -2,7 +2,7 @@ backend:
   name: github
   repo: solmeonwizard/yggdrasilm-store
   branch: main
-  base_url: https://yggdrasil-auth.შენი-ქვედომენი.workers.dev # აქ შენი Worker-ის URL
+  base_url: https://yggdrasil-auth.solmeonwizard.workers.dev # აქ შენი Worker-ის URL
   auth_endpoint: auth
 
 media_folder: "images"
