@@ -1,0 +1,16 @@
+backend:
+  name: git-gateway
+  branch: main # ან master, გააჩნია რა გქვიათ
+
+media_folder: "images" # სად შეინახოს ატვირთული სურათები
+public_folder: "/images"
+
+collections:
+  - name: "products"
+    label: "პროდუქტები"
+    folder: "data" # თუ პროდუქტები JSON ფაილში გაქვთ, აქ მიუთითეთ ის ფოლდერი
+    create: true
+    fields:
+      - {label: "სახელი", name: "title", widget: "string"}
+      - {label: "ფასი", name: "price", widget: "number"}
+      - {label: "აღწერა", name: "body", widget: "markdown"}
