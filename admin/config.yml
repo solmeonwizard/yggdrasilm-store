@@ -1,10 +1,17 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "images"
+public_folder: "/images"
+
 collections:
   - name: "content"
     label: "კონტენტი"
     files:
       - name: "products_list"
         label: "პროდუქტები"
-        file: "data/products.json" # აქ მიუთითებ კონკრეტულ ფაილს
+        file: "data/products.json"
         fields:
           - name: "products"
             label: "პროდუქტების სია"
