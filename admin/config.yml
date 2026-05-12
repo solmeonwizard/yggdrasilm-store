@@ -11,7 +11,9 @@ public_folder: "/images"
 collections:
   - name: "products"
     label: "პროდუქტები"
-    folder: "data" # აქ შეიქმნება თითოეული პროდუქტის JSON
+    folder: "data"
+    extension: json # დაამატე ეს
+    format: json    # დაამატე ეს
     create: true
     slug: "{{slug}}"
     fields:
