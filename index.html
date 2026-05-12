@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>იგდრასილი - დაჯავშნა</title>
+    <!-- 1. Netlify Identity-ის ვიჯეტის დამატება -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <style>
         :root {
             --gold: #d4af37;
@@ -140,6 +142,17 @@
       });
     }
     form.addEventListener("submit", handleSubmit)
+
+    // 2. სკრიპტი, რომელიც ადმინში გადაგიყვანს ავტორიზაციის შემდეგ
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", user => {
+        if (!user) {
+          window.netlifyIdentity.on("login", () => {
+            document.location.href = "/admin/";
+          });
+        }
+      });
+    }
 </script>
 
 </body>
