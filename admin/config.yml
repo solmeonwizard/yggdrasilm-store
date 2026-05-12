@@ -6,18 +6,16 @@ media_folder: "images"
 public_folder: "/images"
 
 collections:
-  - name: "content"
-    label: "კონტენტი"
-    files:
-      - name: "products_list"
-        label: "პროდუქტები"
-        file: "data/products.json"
-        fields:
-          - name: "products"
-            label: "პროდუქტების სია"
-            widget: "list"
-            fields:
-              - {label: "დასახელება", name: "title", widget: "string"}
-              - {label: "ფასი", name: "price", widget: "string"}
-              - {label: "აღწერა", name: "description", widget: "text"}
-              - {label: "სურათი", name: "image", widget: "image"}
+  - name: "products"
+    label: "პროდუქტები"
+    folder: "data"
+    create: true
+    extension: "json"
+    format: "json"
+    slug: "{{title}}"
+    fields:
+      - {label: "დასახელება", name: "title", widget: "string"}
+      - {label: "ფასი", name: "price", widget: "string"}
+      - {label: "მოკლე აღწერა (ბარათზე)", name: "description", widget: "string"}
+      - {label: "სრული ინფორმაცია (მოდალში)", name: "modal_info", widget: "text"}
+      - {label: "სურათი", name: "image", widget: "image"}
