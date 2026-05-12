@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>იგდრასილი - მაღაზია და დაჯავშნა</title>
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <style>
         :root {
             --gold: #d4af37;
@@ -134,14 +133,12 @@
     </nav>
 </header>
 
-<!-- პროდუქტების სექცია -->
 <div id="products" class="container active-section">
     <div class="product-grid" id="productContainer">
         <p style="text-align: center; width: 100%;">იტვირთება...</p>
     </div>
 </div>
 
-<!-- დაჯავშნის სექცია -->
 <div id="booking" class="container">
     <form action="https://formspree.io/f/xdablekz" method="POST">
         <h2 style="text-align: center; color: var(--gold);">ჩაეწერე კონსულტაციაზე</h2>
@@ -161,7 +158,6 @@
     </form>
 </div>
 
-<!-- პროდუქტის მოდალი -->
 <div id="productModal" class="modal">
     <div class="modal-content">
         <span class="close-modal" onclick="closeModal()">&times;</span>
@@ -178,7 +174,6 @@
 </div>
 
 <script>
-    // სექციების გადართვა
     function showSection(sectionId) {
         document.querySelectorAll('.container').forEach(c => c.classList.remove('active-section'));
         document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
@@ -186,78 +181,60 @@
         document.getElementById('nav-' + sectionId).classList.add('active');
     }
 
-    // პროდუქტების წამოღება GitHub API-დან
     async function fetchProducts() {
         const container = document.getElementById('productContainer');
-        const repoOwner = 'solmeonwizard'; 
-        const repoName = 'yggdrasilm-store';
-
+        
         try {
-            const response = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/data`);
-            if (!response.ok) throw new Error('Failed to fetch data');
-            const files = await response.json();
+            // Cloudflare Pages-ზე მონაცემებს ვიღებთ პირდაპირ ლოკალური ფაილიდან
+            const response = await fetch('/data/products.json');
+            if (!response.ok) throw new Error('მონაცემები ვერ მოიძებნა');
             
+            const products = await response.json();
             container.innerHTML = '';
-            let productCount = 0;
 
-            for (const file of files) {
-                if (file.name.endsWith('.json') && file.name !== 'products.json') {
-                    const res = await fetch(file.download_url);
-                    const p = await res.json();
-                    productCount++;
-                    
-                    // ვქმნით ბარათს
-                    const card = document.createElement('div');
-                    card.className = 'product-card';
-                    card.innerHTML = `
-                        <img src="${p.image}" alt="${p.title}" onclick="openModal('${p.image}', '${p.title}', '${p.price}', '${(p.modal_info || p.description).replace(/\n/g, '<br>')}')">
-                        <h3>${p.title}</h3>
-                        <div class="price">${p.price} ₾</div>
-                        <button class="btn" onclick="openModal('${p.image}', '${p.title}', '${p.price}', '${(p.modal_info || p.description).replace(/\n/g, '<br>')}')">ნახვა</button>
-                    `;
-                    container.appendChild(card);
-                }
-            }
-            if (productCount === 0) container.innerHTML = "<p>პროდუქტები ჯერ არ არის დამატებული.</p>";
+            products.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                
+                // ტექსტის დამუშავება ახალი ხაზებისთვის
+                const description = (p.modal_info || p.description || "").replace(/\n/g, '<br>');
+                
+                card.innerHTML = `
+                    <img src="${p.image}" alt="${p.title}" onclick="openModal('${p.image}', '${p.title.replace(/'/g, "\\'")}', '${p.price}', '${description.replace(/'/g, "\\'")}')">
+                    <h3>${p.title}</h3>
+                    <div class="price">${p.price} ₾</div>
+                    <button class="btn" onclick="openModal('${p.image}', '${p.title.replace(/'/g, "\\'")}', '${p.price}', '${description.replace(/'/g, "\\'")}')">ნახვა</button>
+                `;
+                container.appendChild(card);
+            });
+
+            if (products.length === 0) container.innerHTML = "<p>პროდუქტები ჯერ არ არის დამატებული.</p>";
         } catch (error) {
-            console.error(error);
-            container.innerHTML = "<p>ჩატვირთვის შეცდომა. შეამოწმეთ ინტერნეტი ან GitHub-ის წვდომა.</p>";
+            console.error('Error fetching products:', error);
+            container.innerHTML = "<p>მონაცემების ჩატვირთვა ვერ მოხერხდა. სცადეთ გვერდის განახლება.</p>";
         }
     }
 
-    // მოდალის ფუნქციები
     function openModal(img, title, price, desc) {
         document.getElementById('modalImg').src = img;
         document.getElementById('modalTitle').innerText = title;
         document.getElementById('modalPrice').innerText = price + ' ₾';
         document.getElementById('modalDesc').innerHTML = desc;
         document.getElementById('productModal').style.display = 'flex';
-        document.body.style.overflow = 'hidden'; // სქროლის გათიშვა
+        document.body.style.overflow = 'hidden';
     }
 
     function closeModal() {
         document.getElementById('productModal').style.display = 'none';
-        document.body.style.overflow = 'auto'; // სქროლის დაბრუნება
+        document.body.style.overflow = 'auto';
     }
 
-    // დახურვა გარე კლიკზე
     window.onclick = function(event) {
         const modal = document.getElementById('productModal');
         if (event.target == modal) closeModal();
     }
 
     window.onload = fetchProducts;
-
-    // Netlify Identity
-    if (window.netlifyIdentity) {
-        window.netlifyIdentity.on("init", user => {
-            if (!user) {
-                window.netlifyIdentity.on("login", () => {
-                    document.location.href = "/admin/";
-                });
-            }
-        });
-    }
 </script>
 
 </body>
