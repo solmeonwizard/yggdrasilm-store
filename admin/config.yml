@@ -1,16 +1,26 @@
 backend:
   name: git-gateway
-  branch: main # ან master, გააჩნია რა გქვიათ
+  branch: main # დარწმუნდი, რომ შენი მთავარი შტო ნამდვილად main-ია
 
-media_folder: "images" # სად შეინახოს ატვირთული სურათები
+media_folder: "images" # სურათები შეინახება images ფოლდერში
 public_folder: "/images"
 
 collections:
-  - name: "products"
-    label: "პროდუქტები"
-    folder: "data" # თუ პროდუქტები JSON ფაილში გაქვთ, აქ მიუთითეთ ის ფოლდერი
-    create: true
-    fields:
-      - {label: "სახელი", name: "title", widget: "string"}
-      - {label: "ფასი", name: "price", widget: "number"}
-      - {label: "აღწერა", name: "body", widget: "markdown"}
+  - name: "content"
+    label: "კონტენტი"
+    delete: false # ფაილის წაშლა რომ არ მოხდეს შემთხვევით
+    files:
+      - name: "products_list"
+        label: "პროდუქტების სია"
+        file: "data/products.json"
+        description: "აქედან შეგიძლიათ დაამატოთ ან შეცვალოთ საიტზე გამოტანილი პროდუქტები"
+        fields:
+          - name: "products"
+            label: "პროდუქტები"
+            widget: "list" # ეს საშუალებას გაძლევს ბევრი პროდუქტი გქონდეს ერთ ფაილში
+            summary: "{{title}}"
+            fields:
+                - {label: "დასახელება", name: "title", widget: "string"}
+                - {label: "ფასი", name: "price", widget: "string"}
+                - {label: "აღწერა", name: "description", widget: "text"}
+                - {label: "სურათი", name: "image", widget: "image"}
