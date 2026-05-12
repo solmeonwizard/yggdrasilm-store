@@ -17,5 +17,5 @@ collections:
       - {label: "დასახელება", name: "title", widget: "string"}
       - {label: "ფასი", name: "price", widget: "string"}
       - {label: "მოკლე აღწერა (ბარათზე)", name: "description", widget: "string"}
-      - {label: "სრული ინფორმაცია (მოდალში)", name: "modal_info", widget: "string"}
+      - {label: "სრული ინფორმაცია (მოდალში)", name: "modal_info", widget: "text"}
       - {label: "სურათი", name: "image", widget: "image"}
