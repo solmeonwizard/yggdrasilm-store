@@ -31,7 +31,7 @@
             border-bottom: 1px solid rgba(212, 175, 55, 0.3); 
         }
 
-        h1 { color: var(--gold); letter-spacing: 7px; text-transform: uppercase; margin: 0 0 25px 0; font-size: 2.5em; }
+        h1 { color: var(--gold); letter-spacing: 7px; text-transform: uppercase; margin: 0 0 25px 0; font-size: 2.5em; cursor: pointer; }
 
         nav { display: flex; gap: 40px; justify-content: center; }
         nav a { 
@@ -82,7 +82,6 @@
         .product-card h3 { color: var(--gold); margin: 10px 0; font-size: 1.4em; }
         .product-card .price { font-size: 1.2em; font-weight: bold; margin-bottom: 15px; color: var(--white); }
         
-        /* აღწერის სტილი ბარათზე */
         .product-card .description-text { 
             font-size: 0.95em; 
             color: #ccc; 
@@ -131,43 +130,78 @@
             transition: 0.3s; 
             font-size: 1em;
             letter-spacing: 1px;
+            margin-top: 10px;
         }
         .btn:hover { background: #f1c40f; transform: scale(1.02); box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3); }
+        .btn-secondary { background: transparent; color: var(--gold); border: 1px solid var(--gold); }
+
+        #cart-badge {
+            background: red;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 7px;
+            font-size: 12px;
+            position: relative;
+            top: -10px;
+            margin-left: -10px;
+            display: none;
+        }
 
         @media (max-width: 850px) {
             .modal-content { flex-direction: column; max-height: 95vh; }
-            .modal-image-side { height: 350px; }
-            .modal-info-side { padding: 30px; }
+            .modal-image-side { height: 300px; }
+            .modal-info-side { padding: 25px; }
         }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>იგდრასილი</h1>
+    <h1 onclick="showSection('products')">იგდრასილი</h1>
     <nav>
         <a onclick="showSection('products')" id="nav-products" class="active">პროდუქტები</a>
-        <a onclick="showSection('booking')" id="nav-booking">დაჯავშნა</a>
+        <a onclick="prepareBooking()" id="nav-booking">დაჯავშნა</a>
+        <a onclick="showSection('cart')" id="nav-cart">კალათა <span id="cart-badge">0</span></a>
     </nav>
 </header>
 
+<!-- პროდუქტების სექცია -->
 <div id="products" class="container active-section">
     <div class="product-grid" id="productContainer">
         <p style="text-align: center; width: 100%; font-style: italic; color: var(--gold);">იტვირთება კოლექცია...</p>
     </div>
 </div>
 
+<!-- კალათის სექცია -->
+<div id="cart" class="container">
+    <div style="max-width: 600px; margin: auto; background: var(--card-bg); padding: 30px; border-radius: 20px; border: 1px solid var(--gold);">
+        <h2 style="text-align: center; color: var(--gold);">თქვენი კალათა</h2>
+        <div id="cartItems" style="margin: 20px 0; border-bottom: 1px solid rgba(212,175,55,0.2); padding-bottom: 15px;"></div>
+        <div id="cartTotal" style="text-align: right; font-size: 1.2em; font-weight: bold; margin-bottom: 20px;">ჯამი: 0 ₾</div>
+        <button class="btn" onclick="goToCheckout()">შეკვეთის გაფორმება</button>
+        <button class="btn btn-secondary" onclick="clearCart()">კალათის გასუფთავება</button>
+    </div>
+</div>
+
+<!-- დაჯავშნა / ფორმა -->
 <div id="booking" class="container">
     <div style="max-width: 500px; margin: auto; background: var(--card-bg); padding: 40px; border-radius: 20px; border: 1px solid rgba(212, 175, 55, 0.3);">
-        <h2 style="text-align: center; color: var(--gold); margin-bottom: 30px;">დაჯავშნა / შეკვეთა</h2>
-        <form action="https://formspree.io/f/xdablekz" method="POST">
+        <h2 id="formTitle" style="text-align: center; color: var(--gold); margin-bottom: 30px;">შეკვეთის გაფორმება</h2>
+        <form id="mainForm" action="https://formspree.io/f/xdablekz" method="POST">
             <input type="text" name="name" placeholder="თქვენი სახელი" style="width:100%; padding:15px; margin-bottom:15px; background:rgba(0,0,0,0.3); border:1px solid var(--gold); color:white; border-radius:8px;" required>
             <input type="tel" name="phone" placeholder="ტელეფონის ნომერი" style="width:100%; padding:15px; margin-bottom:20px; background:rgba(0,0,0,0.3); border:1px solid var(--gold); color:white; border-radius:8px;" required>
-            <button type="submit" class="btn">გაგზავნა</button>
+            
+            <!-- დამალული ველი შეკვეთის დეტალებისთვის -->
+            <textarea name="details" id="formDetails" style="display:none;"></textarea>
+            
+            <div id="orderPreview" style="margin-bottom: 20px; font-size: 0.9em; color: #aaa;"></div>
+            
+            <button type="submit" class="btn">დადასტურება</button>
         </form>
     </div>
 </div>
 
+<!-- მოდალი -->
 <div id="productModal" class="modal">
     <div class="modal-content">
         <span style="position:absolute; right:25px; top:15px; font-size:40px; color:var(--gold); cursor:pointer; z-index:100;" onclick="closeModal()">&times;</span>
@@ -177,57 +211,120 @@
             <p id="modalPrice" style="font-size:1.5em; font-weight:bold; color:var(--white); margin-bottom: 20px;"></p>
             <div style="height: 2px; background: linear-gradient(90deg, var(--gold), transparent); margin-bottom: 25px;"></div>
             <div id="modalDesc" style="line-height: 1.7; color: #eee; margin-bottom: auto; font-size: 1.05em; padding-bottom: 30px;"></div>
-            <button class="btn" onclick="showSection('booking')">ამ ნივთის შეკვეთა</button>
+            
+            <button class="btn" id="modalAddBtn">კალათაში დამატება</button>
         </div>
     </div>
 </div>
 
 <script>
+    let cart = JSON.parse(localStorage.getItem('yggdrasil_cart')) || [];
+
     function showSection(id) {
         document.querySelectorAll('.container').forEach(c => c.classList.remove('active-section'));
         document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
         document.getElementById(id).classList.add('active-section');
-        document.getElementById('nav-' + id).classList.add('active');
-        if(id !== 'productModal') window.scrollTo({top: 0, behavior: 'smooth'});
+        if (document.getElementById('nav-' + id)) document.getElementById('nav-' + id).classList.add('active');
+        window.scrollTo({top: 0, behavior: 'smooth'});
         closeModal();
+        if (id === 'cart') updateCartUI();
     }
 
+    // კალათის ფუნქციები
+    function addToCart(title, price) {
+        cart.push({ title, price: parseFloat(price) || price });
+        localStorage.setItem('yggdrasil_cart', JSON.stringify(cart));
+        updateCartBadge();
+        alert(title + ' დაემატა კალათაში');
+    }
+
+    function updateCartBadge() {
+        const badge = document.getElementById('cart-badge');
+        badge.innerText = cart.length;
+        badge.style.display = cart.length > 0 ? 'inline' : 'none';
+    }
+
+    function updateCartUI() {
+        const container = document.getElementById('cartItems');
+        const totalEl = document.getElementById('cartTotal');
+        if (cart.length === 0) {
+            container.innerHTML = '<p style="text-align:center;">კალათა ცარიელია</p>';
+            totalEl.innerText = 'ჯამი: 0 ₾';
+            return;
+        }
+        container.innerHTML = cart.map((item, index) => `
+            <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                <span>${item.title}</span>
+                <span>${item.price} ₾ <button onclick="removeItem(${index})" style="background:none; border:none; color:red; cursor:pointer; margin-left:10px;">&times;</button></span>
+            </div>
+        `).join('');
+        
+        let total = cart.reduce((sum, item) => sum + (parseFloat(item.price) || 0), 0);
+        totalEl.innerText = `ჯამი: ${total.toFixed(2)} ₾`;
+    }
+
+    function removeItem(index) {
+        cart.splice(index, 1);
+        localStorage.setItem('yggdrasil_cart', JSON.stringify(cart));
+        updateCartUI();
+        updateCartBadge();
+    }
+
+    function clearCart() {
+        cart = [];
+        localStorage.removeItem('yggdrasil_cart');
+        updateCartUI();
+        updateCartBadge();
+    }
+
+    // ფორმის მომზადება
+    function prepareBooking() {
+        document.getElementById('formTitle').innerText = "ტაროს კონსულტაცია (ჯავშანი)";
+        document.getElementById('formDetails').value = "ტიპი: ტაროს კონსულტაცია";
+        document.getElementById('orderPreview').innerText = "თქვენ ჯავშნით ტაროს კონსულტაციას. ადმინი დაგიკავშირდებათ დროის შესათანხმებლად.";
+        showSection('booking');
+    }
+
+    function goToCheckout() {
+        if (cart.length === 0) return alert('კალათა ცარიელია');
+        document.getElementById('formTitle').innerText = "შეკვეთის გაფორმება";
+        let summary = cart.map(i => i.title + " (" + i.price + " GEL)").join(", ");
+        let total = cart.reduce((sum, item) => sum + (parseFloat(item.price) || 0), 0);
+        
+        document.getElementById('formDetails').value = `შეკვეთა: ${summary} | ჯამი: ${total.toFixed(2)} GEL`;
+        document.getElementById('orderPreview').innerText = "შეკვეთაშია: " + summary;
+        showSection('booking');
+    }
+
+    // პროდუქტების ჩატვირთვა
     async function fetchProducts() {
         const container = document.getElementById('productContainer');
         const repo = 'solmeonwizard/yggdrasilm-store';
-        
         try {
             const response = await fetch(`https://api.github.com/repos/${repo}/contents/data`);
             const files = await response.json();
             container.innerHTML = '';
-
             for (const file of files) {
                 if (file.name.endsWith('.json')) {
                     const res = await fetch(file.download_url);
                     const p = await res.json();
-                    
                     const card = document.createElement('div');
                     card.className = 'product-card';
-                    
-                    // ტექსტების მომზადება
                     const desc = p.description || "";
-                    const mInfo = p.modal_info || "";
-                    const displayDesc = (mInfo || desc).replace(/\n/g, '<br>');
+                    const displayDesc = (p.modal_info || desc).replace(/\n/g, '<br>');
 
                     card.innerHTML = `
-                        <img src="${p.image}" alt="${p.title}" loading="lazy" 
-                             onclick="openModal(\`${p.image}\`, \`${p.title}\`, \`${p.price}\`, \`${displayDesc}\`)">
+                        <img src="${p.image}" alt="${p.title}" loading="lazy" onclick="openModal(\`${p.image}\`, \`${p.title}\`, \`${p.price}\`, \`${displayDesc}\`)">
                         <h3>${p.title}</h3>
                         <div class="price">${p.price} ₾</div>
                         <div class="description-text">${desc.substring(0, 80)}${desc.length > 80 ? '...' : ''}</div>
-                        <button class="btn" style="padding: 10px; font-size: 0.9em;" onclick="openModal(\`${p.image}\`, \`${p.title}\`, \`${p.price}\`, \`${displayDesc}\`)">დეტალები</button>
+                        <button class="btn" style="padding: 10px; font-size: 0.9em;" onclick="addToCart(\`${p.title}\`, \`${p.price}\`)">კალათაში +</button>
                     `;
                     container.appendChild(card);
                 }
             }
-        } catch (e) { 
-            container.innerHTML = "<p style='grid-column: 1/-1; text-align: center;'>ჩატვირთვა ვერ მოხერხდა. შეამოწმეთ ინტერნეტი.</p>"; 
-        }
+            updateCartBadge();
+        } catch (e) { container.innerHTML = "<p>ჩატვირთვა ვერ მოხერხდა.</p>"; }
     }
 
     function openModal(img, title, price, desc) {
@@ -235,6 +332,7 @@
         document.getElementById('modalTitle').innerText = title;
         document.getElementById('modalPrice').innerText = price + ' ₾';
         document.getElementById('modalDesc').innerHTML = desc;
+        document.getElementById('modalAddBtn').onclick = () => addToCart(title, price);
         document.getElementById('productModal').style.display = 'flex';
         document.body.style.overflow = 'hidden';
     }
@@ -244,11 +342,9 @@
         document.body.style.overflow = 'auto';
     }
 
-    window.onclick = function(event) {
-        if (event.target == document.getElementById('productModal')) closeModal();
-    }
-
     window.onload = fetchProducts;
+    window.onclick = e => { if (e.target.className === 'modal') closeModal(); }
 </script>
+
 </body>
 </html>
