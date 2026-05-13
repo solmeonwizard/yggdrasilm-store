@@ -184,19 +184,30 @@
 </div>
 
 <!-- დაჯავშნა / ფორმა -->
+<!-- დაჯავშნა / ფორმა -->
 <div id="booking" class="container">
     <div style="max-width: 500px; margin: auto; background: var(--card-bg); padding: 40px; border-radius: 20px; border: 1px solid rgba(212, 175, 55, 0.3);">
-        <h2 id="formTitle" style="text-align: center; color: var(--gold); margin-bottom: 30px;">შეკვეთის გაფორმება</h2>
+        <h2 id="formTitle" style="text-align: center; color: var(--gold); margin-bottom: 30px;">ტაროს კონსულტაცია</h2>
         <form id="mainForm" action="https://formspree.io/f/xdablekz" method="POST">
             <input type="text" name="name" placeholder="თქვენი სახელი" style="width:100%; padding:15px; margin-bottom:15px; background:rgba(0,0,0,0.3); border:1px solid var(--gold); color:white; border-radius:8px;" required>
-            <input type="tel" name="phone" placeholder="ტელეფონის ნომერი" style="width:100%; padding:15px; margin-bottom:20px; background:rgba(0,0,0,0.3); border:1px solid var(--gold); color:white; border-radius:8px;" required>
+            <input type="tel" name="phone" placeholder="ტელეფონის ნომერი" style="width:100%; padding:15px; margin-bottom:15px; background:rgba(0,0,0,0.3); border:1px solid var(--gold); color:white; border-radius:8px;" required>
             
-            <!-- დამალული ველი შეკვეთის დეტალებისთვის -->
+            <!-- კატეგორიების ჩამონათვალი -->
+            <div id="serviceSelection" style="margin-bottom:15px;">
+                <label style="display:block; margin-bottom:8px; color:var(--gold); font-size:0.9em;">აირჩიეთ კონსულტაციის ტიპი:</label>
+                <select name="service_type" style="width:100%; padding:15px; background:rgba(0,0,0,0.3); border:1px solid var(--gold); color:white; border-radius:8px; cursor:pointer;">
+                    <option value="ზოგადი გაშლა">ზოგადი პროგნოზი (30 წთ)</option>
+                    <option value="სასიყვარულო ურთიერთობები">სასიყვარულო ურთიერთობები</option>
+                    <option value="კარიერა და ფინანსები">კარიერა და ფინანსები</option>
+                    <option value="წლის პროგნოზი">წლის პროგნოზი</option>
+                    <option value="კონკრეტული კითხვა">ერთი კონკრეტული კითხვა</option>
+                </select>
+            </div>
+
             <textarea name="details" id="formDetails" style="display:none;"></textarea>
-            
             <div id="orderPreview" style="margin-bottom: 20px; font-size: 0.9em; color: #aaa;"></div>
             
-            <button type="submit" class="btn">დადასტურება</button>
+            <button type="submit" class="btn">დაჯავშნა</button>
         </form>
     </div>
 </div>
