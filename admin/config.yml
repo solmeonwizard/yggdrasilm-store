@@ -18,7 +18,15 @@ collections:
     slug: "{{slug}}"
     fields:
       - { label: "დასახელება", name: "title", widget: "string" }
-      - { label: "ფასი", name: "price", widget: "number" }
+      - { 
+          label: "ფასი", 
+          name: "price", 
+          widget: "number", 
+          value_type: "float", 
+          min: 0.20, 
+          max: 2.00, 
+          step: 0.01 
+        }
       - { label: "სურათი", name: "image", widget: "image" }
       - { label: "აღწერა", name: "description", widget: "markdown" }
       - { label: "დამატებითი ინფო", name: "modal_info", widget: "text", required: false }
