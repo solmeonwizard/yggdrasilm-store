@@ -289,9 +289,11 @@
     }
 
     // ფორმის მომზადება
-    function prepareBooking() {
+ function prepareBooking() {
     document.getElementById('formTitle').innerText = "ტაროს კონსულტაცია";
     document.getElementById('serviceSelection').style.display = 'block'; // ვაჩენთ სერვისებს
+    document.querySelector('#mainForm button[type="submit"]').innerText = "დაჯავშნა"; // ღილაკის ტექსტი
+    
     document.getElementById('formDetails').value = "ტიპი: ინდივიდუალური ჯავშანი";
     document.getElementById('orderPreview').innerText = "";
     showSection('booking');
@@ -299,14 +301,16 @@
 
 function goToCheckout() {
     if (cart.length === 0) return alert('კალათა ცარიელია');
+    
     document.getElementById('formTitle').innerText = "შეკვეთის გაფორმება";
-    document.getElementById('serviceSelection').style.display = 'none'; // ვმალავთ სერვისებს, რადგან კალათაა
+    document.getElementById('serviceSelection').style.display = 'none'; // ვმალავთ ტაროს სერვისებს!
+    document.querySelector('#mainForm button[type="submit"]').innerText = "შეკვეთა"; // ღილაკის ტექსტი
     
     let summary = cart.map(i => i.title + " (" + i.price + " GEL)").join(", ");
     let total = cart.reduce((sum, item) => sum + (parseFloat(item.price) || 0), 0);
     
     document.getElementById('formDetails').value = `შეკვეთა: ${summary} | ჯამი: ${total.toFixed(2)} GEL`;
-    document.getElementById('orderPreview').innerText = "თქვენს კალათაშია: " + summary;
+    document.getElementById('orderPreview').innerText = "შეკვეთაშია: " + summary;
     showSection('booking');
 }
     // პროდუქტების ჩატვირთვა
