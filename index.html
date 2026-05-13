@@ -290,23 +290,25 @@
 
     // ფორმის მომზადება
     function prepareBooking() {
-        document.getElementById('formTitle').innerText = "ტაროს კონსულტაცია (ჯავშანი)";
-        document.getElementById('formDetails').value = "ტიპი: ტაროს კონსულტაცია";
-        document.getElementById('orderPreview').innerText = "თქვენ ჯავშნით ტაროს კონსულტაციას. ადმინი დაგიკავშირდებათ დროის შესათანხმებლად.";
-        showSection('booking');
-    }
+    document.getElementById('formTitle').innerText = "ტაროს კონსულტაცია";
+    document.getElementById('serviceSelection').style.display = 'block'; // ვაჩენთ სერვისებს
+    document.getElementById('formDetails').value = "ტიპი: ინდივიდუალური ჯავშანი";
+    document.getElementById('orderPreview').innerText = "";
+    showSection('booking');
+}
 
-    function goToCheckout() {
-        if (cart.length === 0) return alert('კალათა ცარიელია');
-        document.getElementById('formTitle').innerText = "შეკვეთის გაფორმება";
-        let summary = cart.map(i => i.title + " (" + i.price + " GEL)").join(", ");
-        let total = cart.reduce((sum, item) => sum + (parseFloat(item.price) || 0), 0);
-        
-        document.getElementById('formDetails').value = `შეკვეთა: ${summary} | ჯამი: ${total.toFixed(2)} GEL`;
-        document.getElementById('orderPreview').innerText = "შეკვეთაშია: " + summary;
-        showSection('booking');
-    }
-
+function goToCheckout() {
+    if (cart.length === 0) return alert('კალათა ცარიელია');
+    document.getElementById('formTitle').innerText = "შეკვეთის გაფორმება";
+    document.getElementById('serviceSelection').style.display = 'none'; // ვმალავთ სერვისებს, რადგან კალათაა
+    
+    let summary = cart.map(i => i.title + " (" + i.price + " GEL)").join(", ");
+    let total = cart.reduce((sum, item) => sum + (parseFloat(item.price) || 0), 0);
+    
+    document.getElementById('formDetails').value = `შეკვეთა: ${summary} | ჯამი: ${total.toFixed(2)} GEL`;
+    document.getElementById('orderPreview').innerText = "თქვენს კალათაშია: " + summary;
+    showSection('booking');
+}
     // პროდუქტების ჩატვირთვა
     async function fetchProducts() {
         const container = document.getElementById('productContainer');
