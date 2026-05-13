@@ -168,6 +168,38 @@
             .modal-image-side { height: 300px; }
             .modal-info-side { padding: 25px; }
         }
+        footer {
+    background-color: #1a1a1a; /* მუქი ფონი, როგორც საიტს უხდება */
+    color: #ffffff;
+    padding: 40px 20px;
+    text-align: center;
+    border-top: 1px solid #333;
+}
+
+.footer-contact h3 {
+    color: #f1c40f; /* ოქროსფერი აქცენტი */
+    margin-bottom: 20px;
+}
+
+.footer-contact p {
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+.footer-contact a {
+    color: #f1c40f;
+    text-decoration: none;
+}
+
+.footer-contact a:hover {
+    text-decoration: underline;
+}
+
+.footer-bottom {
+    margin-top: 30px;
+    font-size: 12px;
+    opacity: 0.6;
+}
     </style>
 </head>
 <body>
@@ -378,6 +410,14 @@ function goToCheckout() {
     window.onload = fetchProducts;
     window.onclick = e => { if (e.target.className === 'modal') closeModal(); }
 </script>
-
+    <footer>
+        <div class="footer-contact">
+            <h3>კონტაქტი</h3>
+            <p><strong>მისამართი:</strong> აკაკი წერეთლის გამზირი 61, თბილისი</p>
+            <p><strong>ტელეფონი:</strong> <a href="tel:+995555433424">555 43 34 24</a></p>
+            <p><strong>ელ-ფოსტა:</strong> <a href="mailto:morticia@yggdrasilm.store">morticia@yggdrasilm.store</a></p>
+        </div>
+    </footer>
 </body>
+    
 </html>
