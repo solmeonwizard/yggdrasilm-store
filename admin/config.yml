@@ -21,11 +21,8 @@ collections:
       - { 
           label: "ფასი", 
           name: "price", 
-          widget: "number", 
-          value_type: "float", 
-          min: 0.20, 
-          max: 2.00, 
-          step: 0.01 
+          widget: "string", 
+          hint: "შეგიძლიათ მიუთითოთ დიაპაზონი, მაგ: 0.20 - 2.00 GEL"
         }
       - { label: "სურათი", name: "image", widget: "image" }
       - { label: "აღწერა", name: "description", widget: "markdown" }
